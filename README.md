@@ -4,6 +4,10 @@ Use `nimble build` to build.
 
 ## Key Bindings
 
+P   - Pause / Resume
+  
+Esc - Quit
+
 | Original | Emulator |
 |----------|----------|
 | 1 2 3 C  | 1 2 3 4  |
