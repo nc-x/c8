@@ -37,8 +37,57 @@ proc main() =
   var rom = readFile(params[0])
   var cp8 = initCpu(rom)
 
-  while true:
-    cp8.execute_cycle()
+  var e: Event
+  var quit = false
+  var pause = false
+
+  while not quit:
+    if not pause:
+      cp8.execute_cycle()
+
+    while pollEvent(addr e) != 0:
+      if e.kind == QUIT:
+        quit = true
+      elif e.kind == KEYDOWN:
+        case e.key.keysym.sym
+        of K_1: cp8.key[0x1] = 1
+        of K_2: cp8.key[0x2] = 1
+        of K_3: cp8.key[0x3] = 1
+        of K_4: cp8.key[0xC] = 1
+        of K_q: cp8.key[0x4] = 1
+        of K_w: cp8.key[0x5] = 1
+        of K_e: cp8.key[0x6] = 1
+        of K_r: cp8.key[0xD] = 1
+        of K_a: cp8.key[0x7] = 1
+        of K_s: cp8.key[0x8] = 1
+        of K_d: cp8.key[0x9] = 1
+        of K_f: cp8.key[0xE] = 1
+        of K_z: cp8.key[0xA] = 1
+        of K_x: cp8.key[0x0] = 1
+        of K_c: cp8.key[0xB] = 1
+        of K_v: cp8.key[0xF] = 1
+        of K_p: pause = not pause
+        of K_ESCAPE: quit = true
+        else: discard
+      elif e.kind == KEYUP:
+        case e.key.keysym.sym
+        of K_1: cp8.key[0x1] = 0
+        of K_2: cp8.key[0x2] = 0
+        of K_3: cp8.key[0x3] = 0
+        of K_4: cp8.key[0xC] = 0
+        of K_q: cp8.key[0x4] = 0
+        of K_w: cp8.key[0x5] = 0
+        of K_e: cp8.key[0x6] = 0
+        of K_r: cp8.key[0xD] = 0
+        of K_a: cp8.key[0x7] = 0
+        of K_s: cp8.key[0x8] = 0
+        of K_d: cp8.key[0x9] = 0
+        of K_f: cp8.key[0xE] = 0
+        of K_z: cp8.key[0xA] = 0
+        of K_x: cp8.key[0x0] = 0
+        of K_c: cp8.key[0xB] = 0
+        of K_v: cp8.key[0xF] = 0
+        else: discard
 
     var white = mapRGB(screenSurface.format, 0xFF, 0xFF, 0xFF)
     var black = mapRGB(screenSurface.format, 0x00, 0x00, 0x00)
