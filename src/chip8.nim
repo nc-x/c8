@@ -1,3 +1,4 @@
+import os
 import cpu
 import sdl2/sdl
 
@@ -27,7 +28,13 @@ proc main() =
   initDisplay()
   defer: deinitDisplay()
 
-  var rom = readFile("PONG")
+  var params = commandLineParams()
+
+  if params.len != 1:
+    echo "Invalid number of arguments passed to the executable"
+    quit(-1)
+
+  var rom = readFile(params[0])
   var cp8 = initCpu(rom)
 
   while true:
